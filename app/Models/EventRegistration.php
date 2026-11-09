@@ -19,11 +19,6 @@ class EventRegistration extends Model
 {
     use HasFactory;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -31,17 +26,13 @@ class EventRegistration extends Model
         ];
     }
 
-    /**
-     * Get the student who owns the registration.
-     */
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get the event this registration belongs to.
-     */
+
     public function event()
     {
         return $this->belongsTo(Event::class);

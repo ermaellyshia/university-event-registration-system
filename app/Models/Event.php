@@ -11,11 +11,6 @@ class Event extends Model
 {
     use HasFactory;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -23,11 +18,9 @@ class Event extends Model
         ];
     }
 
-    /**
-     * Get the registrations for this event.
-     */
+
     public function registrations()
     {
-        return $this->hasMany('App\\Models\\EventRegistration');
+        return $this->hasMany(EventRegistration::class);
     }
 }

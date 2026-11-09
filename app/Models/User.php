@@ -17,11 +17,6 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -30,17 +25,12 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Get the event registrations for the student.
-     */
     public function registrations()
     {
-        return $this->hasMany('App\\Models\\EventRegistration');
+        return $this->hasMany(EventRegistration::class);
     }
 
-    /**
-     * Check if the user has an admin role.
-     */
+
     public function isAdmin()
     {
         return $this->role === 'admin';
