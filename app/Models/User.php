@@ -29,4 +29,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the event registrations for the student.
+     */
+    public function registrations()
+    {
+        return $this->hasMany('App\\Models\\EventRegistration');
+    }
+
+    /**
+     * Check if the user has an admin role.
+     */
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
 }

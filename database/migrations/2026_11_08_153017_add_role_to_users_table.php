@@ -1,23 +1,48 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
+namespace App\Models;
 
-return new class extends Migration
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+
+#[Fillable(['name', 'username', 'email', 'password', 'role'])]
+#[Hidden(['password', 'remember_token'])]
+class User extends Authenticatable
 {
-    public function up(): void
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, Notifiable;
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('username')->unique()->after('name');
-            $table->enum('role', ['student', 'admin'])->default('student')->after('password');
-        });
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 
-    public function down(): void
+    /**
+     * Get the event registrations for the student.
+     */
+    public function registrations()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['username', 'role']);
-        });
+        return $this->hasMany(EventRegistration::class);
     }
-};
+
+    /**
+     * Check if the user has an admin role.
+     */
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+}
